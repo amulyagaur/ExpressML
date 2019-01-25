@@ -91,7 +91,15 @@ app.get('*', function (req, res, next) {
 app.get('/file', (req, res) => res.render('upload'));
 app.get('/csv', (req, res) => res.render('fromcsv'));
 app.get('/', (req, res) => res.render('landingpage'));
-app.get('/mainpage', (req, res) => res.render('index'));
+app.get('/mainpage', function (req, res) {
+    if (req.user) {
+        res.render('index');
+    }
+    else {
+        req.flash('error', "Please Login");
+        res.redirect('/users/login');
+    }
+});
 
 app.post('/file', function (req, res) {
     var form = new formidable.IncomingForm();
@@ -101,7 +109,7 @@ app.post('/file', function (req, res) {
     form.parse(req);
 
     form.on('fileBegin', function (name, file) {
-        file.name = 'data.csv';
+        file.name = req.user.username + '.csv';
         file.path = __dirname + '/public/uploads/' + file.name;
     });
 
@@ -109,7 +117,7 @@ app.post('/file', function (req, res) {
         console.log('Uploaded ' + file.name);
 
         csv
-            .fromPath("./public/uploads/data.csv")
+            .fromPath("./public/uploads/"+req.user.username+".csv")
             .on("data", function (data) {
                 dataset.push(data);
             })
