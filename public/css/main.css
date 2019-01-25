@@ -4092,5 +4092,65 @@ html.no-csstransitions .home-content__main {
   }
 
 }
+.intro {
+	width: 90%;
+	max-width: 50rem;
+	padding-top: .5em;
+	padding-bottom: 1rem;
+	margin: 0 auto 1em;
+	font-size: calc(1rem + 2vmin);
+	text-transform: capitalize;
+	text-align: center;
+	font-family: serif;
+  }
+  .intro small {
+	display: block;
+	text-align: right;
+	opacity: .5;
+	font-style: italic;
+	text-transform: none;
+	border-top: 1px dashed rgba(255, 255, 255, 0.75);
+  }
+  
+  .info {
+	margin: 0;
+	padding: 1em;
+	font-size: .9em;
+	font-style: italic;
+	font-family: serif;
+	text-align: right;
+	opacity: .75;
+  }
+  .info a {
+	color: inherit;
+  }
+
+  .btn3d {
+    position:relative;
+    top: -6px;
+    border:0;
+     transition: all 40ms linear;
+     margin-top:10px;
+     margin-bottom:10px;
+     margin-left:2px;
+     margin-right:2px;
+}
+.btn3d:active:focus,
+.btn3d:focus:hover,
+.btn3d:focus {
+    -moz-outline-style:none;
+         outline:medium none;
+}
+.btn3d:active, .btn3d.active {
+    top:2px;
+}
+.btn3d.btn-success {
+    box-shadow:0 0 0 1px #202020d3 inset, 0 0 0 2px rgba(255,255,255,0.15) inset, 0 8px 0 0 hsl(60, 1%, 15%), 0 8px 8px 1px rgba(0,0,0,0.5);
+    background-color:hsl(60, 1%, 14%);
+}
+.btn3d.btn-success:active, .btn3d.btn-success.active {
+    box-shadow:0 0 0 1px #202020d3 inset, 0 0 0 1px rgba(255,255,255,0.15) inset, 0 1px 3px 1px rgba(0,0,0,0.3);
+    background-color: hsl(60, 1%, 14%);
+}
 
 /*# sourceMappingURL=main.css.map */

@@ -79,6 +79,13 @@
                                 <div>
                                     <%- messages('message', locals) %>
                                   </div>
+                                  <% if(typeof errors !== 'undefined'){ %>
+                                    <div >
+                                 <% for(var i=0;i<errors.length;i++) { %>
+                                   <div class ="alert alert-danger "><%= errors[i].msg %></div>
+                                 <% } %>
+                                    </div>
+                                <% } %>
                             </header>
                             <form class="form-signin" method="POST" action="/users/register">
 
