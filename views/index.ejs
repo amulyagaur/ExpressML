@@ -76,6 +76,9 @@
                         <section id="content">
                             <header>
                                 <h2>Get Started</h2>
+                                <div>
+                                    <%- messages('message', locals) %>
+                                  </div>
                             </header>
                             <form action="/file" enctype="multipart/form-data" method="post" class="dropzone"></form>
                             <div align="center">

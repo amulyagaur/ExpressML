@@ -91,6 +91,7 @@ app.get('*', function (req, res, next) {
 app.get('/file', (req, res) => res.render('upload'));
 app.get('/csv', (req, res) => res.render('fromcsv'));
 app.get('/', (req, res) => res.render('landingpage'));
+app.get('/mainpage', (req, res) => res.render('index'));
 
 app.post('/file', function (req, res) {
     var form = new formidable.IncomingForm();
