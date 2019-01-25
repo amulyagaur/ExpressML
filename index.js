@@ -64,7 +64,6 @@ require('./config/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 var mongoose = require('mongoose');
 mongoose.connect(config.database, {
     useNewUrlParser: true
