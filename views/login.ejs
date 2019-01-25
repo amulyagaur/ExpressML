@@ -76,6 +76,9 @@
                         <section id="content">
                             <header>
                                 <h2><center>LOGIN</center></h2>
+                                <div>
+                                    <%- messages('message', locals) %>
+                                  </div>
                             </header>
                             <form class="form-signin" method="POST" action="/users/login">
 
