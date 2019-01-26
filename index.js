@@ -115,6 +115,25 @@ else
 }
 });
 
+app.get('/analyze', function (req, res) {
+
+    if(req.user)
+    {
+        res.render('analyze', {
+            features: features,
+            traintime: "",
+            accuracy: "",
+            type:""
+        });
+    }
+    else
+    {
+        req.flash('error', "Please Login");
+        res.redirect('/users/login');
+    }
+});
+
+
 app.post('/file', function (req, res) {
     var form = new formidable.IncomingForm();
     features = [];
