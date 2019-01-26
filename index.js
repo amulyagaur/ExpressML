@@ -133,6 +133,74 @@ app.get('/analyze', function (req, res) {
     }
 });
 
+app.post('/analyze', function (req, res) {
+
+    var MyData = req.body.feature;
+    var label = req.body.label;
+    var type = req.body.type;
+    var classifier,regressor;
+    console.log(type);
+    if (type == 'on')
+    {
+        msg.push("regression");
+        type="checked";
+        regressor = req.body.regressor;
+    }
+    else
+    {
+        msg.push("classification");
+        type="unchecked";
+        classifier = req.body.classifier;
+    }
+    console.log(classifier);
+    console.log(regressor);
+    str = JSON.stringify(MyData);
+    str = str + "\n" + label;
+    console.log(str);
+    var pyshell = new PythonShell('script.py');
+    pyshell.send(str);
+
+    pyshell.on('message', function (message) {
+        // received a message sent from the Python script (a simple "print" statement)
+        //console.log(message);
+        msg.push(message);
+    });
+
+    // end the input stream and allow the process to exit
+    pyshell.end(function (err, code, signal) {
+        if (err)
+            throw err;
+        console.log('finished');
+        console.log(msg);
+        for (var i = 0; i < msg.length; i++) {
+            console.log(i);
+            console.log("\n");
+            console.log(msg[i]);
+            console.log("\n");
+        }
+        var acc = msg[1];
+        acc = acc.substr(1, acc.length - 2);
+
+        acc = acc.replace(/\(/g, '');
+
+        acc = acc.replace(/\)/g, '');
+
+        acc = acc.split(',');
+
+        var t_time = msg[3];
+        t_time = t_time.substr(1, t_time.length - 2);
+        t_time = t_time.split(',');
+
+
+        res.render('analyze', {
+            features: features,
+            traintime: t_time,
+            accuracy: acc,
+            type:type
+        });
+
+    });
+});
 
 app.post('/file', function (req, res) {
     var form = new formidable.IncomingForm();
