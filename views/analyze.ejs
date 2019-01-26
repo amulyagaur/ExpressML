@@ -66,6 +66,7 @@
 		$(document).ready(function () {
 			$("#analyzeButton").attr('disabled', true);
 			$(".regress").hide();
+			$(".cls").hide();
 		});
 
 		function func(featureName) {
@@ -89,7 +90,36 @@
 			$(".classify").show();
 			$(".regress").hide();
 		}
+
+		function showKNN()
+		{
+			$(".cls").hide();
+			$("#KNN").show();
+		}
+
+		function showLR()
+		{
+			$(".cls").hide();
+			$("#LR").show();
+		}
+
+		function showSVC()
+		{
+			$(".cls").hide();
+			$("#SVC").show();
+		}
 		
+		function showRFC()
+		{
+			$(".cls").hide();
+			$("#RFC").show();
+		}
+
+		function showGNB()
+		{
+			$(".cls").hide();
+			$("#GNB").show();
+		}
 	</script>
 </head>
 
@@ -120,10 +150,10 @@
 		<!-- /Header -->
 
 		<div id="page">
-			<div class="container">
+			<div>
 				<div class="row">
-					<div class="3u">
-						<section id="sidebard2">
+					<div class="2u" align="left">
+						<section id="sidebar1">
 							<header>
 
 								<h2>Features</h2>
@@ -176,9 +206,8 @@
 						</section>
 					</div>
 
-					<div class="9u skel-cell-important">
-						<section id="content">
-
+					<div class="7u">
+						<section id="sidebar2">
 							<header>
 								<div class="box">
 
@@ -190,12 +219,35 @@
 								</div>
 
 							</header>
+							<iframe class="cls" id="KNN" src="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html" height=980px width=850px>
+								
+							  </iframe>
+							  <iframe class="cls" id="LR" src="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html" height=980px width=850px>
+								
+							  </iframe>
+							  <iframe class="cls" id="GNB" src="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html" height=980px width=850px>
+								
+							  </iframe>
+							  <iframe class="cls" id="RFC" src="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html" height=980px width=850px>
+								
+							  </iframe>
+							  <iframe class="cls" id="SVC" src="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html" height=980px width=850px>
+								
+							  </iframe>      
+						</section>
+					</div>
+
+					<div class="3u skel-cell-important">
+						<section id="content">
+								<header>
+										<h2>Models</h2>			
+								</header>							
 							<div class="classify">
 								<ul class="style1">
 									<div class="container">
 										<li>
 											<div class="pretty p-icon p-round p-pulse">
-												<input type="radio" name="classifier" value="KNN" id="KNN" onclick="activateButton()" />
+												<input type="radio" name="classifier" value="KNN" id="KNN" onclick="showKNN()" />
 												<div class="state p-success">
 													<i class="icon mdi mdi-check"></i>
 													<label style="font-family: 'Copse';">
@@ -207,7 +259,7 @@
 										<br>
 										<li>
 											<div class="pretty p-icon p-round p-pulse">
-												<input type="radio" name="classifier" value="LRC" id="LRC" onclick="activateButton()" />
+												<input type="radio" name="classifier" value="LRC" id="LRC" onclick="showLR()" />
 												<div class="state p-success">
 													<i class="icon mdi mdi-check"></i>
 													<label style="font-family: 'Copse';">
@@ -219,7 +271,7 @@
 										<br>
 										<li>
 											<div class="pretty p-icon p-round p-pulse">
-												<input type="radio" name="classifier" value="SVC" id="SVC" onclick="activateButton()" />
+												<input type="radio" name="classifier" value="SVC" id="SVC" onclick="showSVC()" />
 												<div class="state p-success">
 													<i class="icon mdi mdi-check"></i>
 													<label style="font-family: 'Copse';">
@@ -229,35 +281,13 @@
 											</div>
 										</li>
 										<br>
-										<li>
-											<div class="pretty p-icon p-round p-pulse">
-												<input type="radio" name="classifier" value="GPC" id="GPC" onclick="activateButton()" />
-												<div class="state p-success">
-													<i class="icon mdi mdi-check"></i>
-													<label style="font-family: 'Copse';">
-														Gaussian process classifier (GPC)
-													</label>
-												</div>
-											</div>
-										</li>
-										<br>
+										
+
+										
 
 										<li>
 											<div class="pretty p-icon p-round p-pulse">
-												<input type="radio" name="classifier" value="DTC" id="DTC" onclick="activateButton()" />
-												<div class="state p-success">
-													<i class="icon mdi mdi-check"></i>
-													<label style="font-family: 'Copse';">
-														DecisionTreeClassifier
-													</label>
-												</div>
-											</div>
-										</li>
-										<br>
-
-										<li>
-											<div class="pretty p-icon p-round p-pulse">
-												<input type="radio" name="classifier" value="RFC" id="RFC" onclick="activateButton()" />
+												<input type="radio" name="classifier" value="RFC" id="RFC" onclick="showRFC()" />
 												<div class="state p-success">
 													<i class="icon mdi mdi-check"></i>
 													<label style="font-family: 'Copse';">
@@ -268,35 +298,13 @@
 										</li>
 										<br>
 
-										<li>
-											<div class="pretty p-icon p-round p-pulse">
-												<input type="radio" name="classifier" value="MLPC" id="MLPC" onclick="activateButton()" />
-												<div class="state p-success">
-													<i class="icon mdi mdi-check"></i>
-													<label style="font-family: 'Copse';">
-														MLPClassifier (Neural Network)
-													</label>
-												</div>
-											</div>
-										</li>
-										<br>
+										
+
+										
 
 										<li>
 											<div class="pretty p-icon p-round p-pulse">
-												<input type="radio" name="classifier" value="ABC" id="ABC" onclick="activateButton()" />
-												<div class="state p-success">
-													<i class="icon mdi mdi-check"></i>
-													<label style="font-family: 'Copse';">
-														AdaBoostClassifier
-													</label>
-												</div>
-											</div>
-										</li>
-										<br>
-
-										<li>
-											<div class="pretty p-icon p-round p-pulse">
-												<input type="radio" name="classifier" value="GNB" id="GNB" onclick="activateButton()" />
+												<input type="radio" name="classifier" value="GNB" id="GNB" onclick="showGNB()" />
 												<div class="state p-success">
 													<i class="icon mdi mdi-check"></i>
 													<label style="font-family: 'Copse';">
@@ -307,18 +315,7 @@
 										</li>
 										<br>
 
-										<li>
-											<div class="pretty p-icon p-round p-pulse">
-												<input type="radio" name="classifier" value="QDA" id="QDA" onclick="activateButton()" />
-												<div class="state p-success">
-													<i class="icon mdi mdi-check"></i>
-													<label style="font-family: 'Copse';">
-														QuadraticDiscriminantAnalysis
-													</label>
-												</div>
-											</div>
-										</li>
-										<br>
+										
 
 										<li>
 											<div class="pretty p-icon p-round p-pulse">
@@ -553,11 +550,7 @@
 						</section>
 					</div>
 
-
-
-
-
-
+					
 					<!-- Copyright -->
 					<div id="copyright">
 						<div class="container">
