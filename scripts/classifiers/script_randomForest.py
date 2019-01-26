@@ -7,14 +7,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from time import time 
 
-df = pd.read_csv("data.csv") 	
-
-train,test = train_test_split(df,test_size=0.9)
-
 lines = sys.stdin.readlines()
-
 trainfeatures = lines[0][1:-2]
 label =lines[1][:-1]
+filename = lines[2][:-1]
+
+df = pd.read_csv(filename) 	
+
+train,test = train_test_split(df,test_size=0.9)
 
 features='\",'+trainfeatures+',\"'
 feat = features.split('","')

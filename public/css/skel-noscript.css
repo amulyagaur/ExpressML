@@ -65,7 +65,7 @@
 		.\-1u { margin-left: 8.3333333333% }
 
 		.row > * {
-			padding: 50px 0 0 50px;
+			padding: 0px 0 0 50px;
 			float: left;
 			-moz-box-sizing: border-box;
 			-webkit-box-sizing: border-box;
@@ -79,7 +79,7 @@
 		}
 
 		.row {
-			margin-left: -50px;
+			margin-left: 0px;
 		}
 
 	/* Rows */

@@ -21,6 +21,7 @@ var features = [];
 var dataframe = [];
 var dataset = [];
 var msg = [];
+var filename;
 
 var bodyParser = require('body-parser')
 // parse application/x-www-form-urlencoded
@@ -102,32 +103,28 @@ app.get('/mainpage', function (req, res) {
 });
 
 app.get('/visualize', function (req, res) {
-    if(req.user)
-    {
-    res.render('visual', {
-        features: features
-    });
-}
-else
-{
-    req.flash('error', "Please Login");
+    if (req.user) {
+        res.render('visual', {
+            features: features
+        });
+    }
+    else {
+        req.flash('error', "Please Login");
         res.redirect('/users/login');
-}
+    }
 });
 
 app.get('/analyze', function (req, res) {
 
-    if(req.user)
-    {
+    if (req.user) {
         res.render('analyze', {
             features: features,
             traintime: "",
             accuracy: "",
-            type:""
+            type: ""
         });
     }
-    else
-    {
+    else {
         req.flash('error', "Please Login");
         res.redirect('/users/login');
     }
@@ -138,68 +135,84 @@ app.post('/analyze', function (req, res) {
     var MyData = req.body.feature;
     var label = req.body.label;
     var type = req.body.type;
-    var classifier,regressor;
+    var classifier, regressor;
     console.log(type);
-    if (type == 'on')
-    {
+    if (type == 'on') {
         msg.push("regression");
-        type="checked";
+        type = "checked";
         regressor = req.body.regressor;
     }
-    else
-    {
+    else {
         msg.push("classification");
-        type="unchecked";
+        type = "unchecked";
         classifier = req.body.classifier;
     }
     console.log(classifier);
     console.log(regressor);
-    str = JSON.stringify(MyData);
-    str = str + "\n" + label;
-    console.log(str);
-    var pyshell = new PythonShell('script.py');
-    pyshell.send(str);
-
-    pyshell.on('message', function (message) {
-        // received a message sent from the Python script (a simple "print" statement)
-        //console.log(message);
-        msg.push(message);
-    });
-
-    // end the input stream and allow the process to exit
-    pyshell.end(function (err, code, signal) {
-        if (err)
-            throw err;
-        console.log('finished');
-        console.log(msg);
-        for (var i = 0; i < msg.length; i++) {
-            console.log(i);
-            console.log("\n");
-            console.log(msg[i]);
-            console.log("\n");
+    var scriptfile;
+    if ((typeof classifier == undefined) && (typeof regressor == undefined)) {
+        req.flash('error', 'Select a model first');
+        res.redirect('/analyze');
+    }
+    else
+        if (MyData.length == 0) {
+            req.flash('error', 'Select atleast one feature');
+            res.redirect('/analyze');
         }
-        var acc = msg[1];
-        acc = acc.substr(1, acc.length - 2);
+        else {
+            str = JSON.stringify(MyData);
+            str = str + "\n" + label + "\n" + filename;
+            console.log(str);
+            if(type=="checked")
+            scriptfile = regressor;
+            else
+            scriptfile = classifier;
+            scriptfile = 'scripts/classifiers/'+scriptfile+'.py';
+            var pyshell = new PythonShell(scriptfile);
+            pyshell.send(str);
 
-        acc = acc.replace(/\(/g, '');
+            pyshell.on('message', function (message) {
+                // received a message sent from the Python script (a simple "print" statement)
+                //console.log(message);
+                msg.push(message);
+            });
 
-        acc = acc.replace(/\)/g, '');
+            // end the input stream and allow the process to exit
+            pyshell.end(function (err, code, signal) {
+                if (err)
+                    throw err;
+                console.log('finished');
+                console.log(msg);
+                
+                for (var i = 0; i < msg.length; i++) {
+                    console.log(i);
+                    console.log("\n");
+                    console.log(msg[i]);
+                    console.log("\n");
+                }
+                var acc = msg[1];
+                acc = acc.substr(1, acc.length - 2);
 
-        acc = acc.split(',');
+                acc = acc.replace(/\(/g, '');
 
-        var t_time = msg[3];
-        t_time = t_time.substr(1, t_time.length - 2);
-        t_time = t_time.split(',');
+                acc = acc.replace(/\)/g, '');
+
+                acc = acc.split(',');
+
+                var t_time = msg[3];
+                t_time = t_time.substr(1, t_time.length - 2);
+                t_time = t_time.split(',');
 
 
-        res.render('analyze', {
-            features: features,
-            traintime: t_time,
-            accuracy: acc,
-            type:type
-        });
+                res.render('analyze', {
+                    features: features,
+                    traintime: t_time,
+                    accuracy: acc,
+                    type: type
+                });
 
-    });
+            });
+        }
 });
 
 app.post('/file', function (req, res) {
@@ -212,13 +225,14 @@ app.post('/file', function (req, res) {
     form.on('fileBegin', function (name, file) {
         file.name = req.user.username + '.csv';
         file.path = __dirname + '/public/uploads/' + file.name;
+        filename=file.name;
     });
 
     form.on('file', function (name, file) {
         console.log('Uploaded ' + file.name);
 
         csv
-            .fromPath("./public/uploads/"+req.user.username+".csv")
+            .fromPath("./public/uploads/" + req.user.username + ".csv")
             .on("data", function (data) {
                 dataset.push(data);
             })
