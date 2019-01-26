@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>ExpressML</title>
+    <title>Visual Box</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -75,31 +75,12 @@
                     <div class="6u skel-cell-important">
                         <section id="content">
                             <header>
-                                <h2>LOGIN</h2>
+                                <h2>Get Started</h2>
                             </header>
-                            <form class="form-signin" method="POST" action="/users/login">
-
-                                
-                                
-                                
-                                
-                                
-                                <div class="form-label-group">
-                                <input type="number" id="inputRegno" class="form-control" placeholder="Registration Number" name="username" required autofocus>
-                                <label for="inputRegno">Registration Number</label>
-                                </div>
-                                
-                                <div class="form-label-group">
-                                <input type="password" id="inputPassword" class="form-control" placeholder="Password" name="password" required>
-                                <label for="inputPassword">Password</label>
-                                </div>
-                                
-                                
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                                
-                                </form>
+                            <form action="/file" enctype="multipart/form-data" method="post" class="dropzone"></form>
                             <div align="center">
-                                <a href="/users/login" class="button">Login</a>&nbsp;
+                                <a href="/visualize" class="button">Visualize</a>&nbsp;
+                                <a href="/analyze" class="button">Analyze</a>
                             </div>
                         </section>
                     </div>
