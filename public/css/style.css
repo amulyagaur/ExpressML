@@ -95,7 +95,7 @@
 	header h2
 	{
 		letter-spacing: -2px;
-		text-transform: uppercase;
+		text-transform: lowercase;
 		font-weight: 900;
 		font-size: 2em;
 		color: #323338;
@@ -595,7 +595,7 @@ ul.style3 .date {
 	border-radius: 4px;
 	line-height: normal;
 	text-align: center;
-	text-transform: uppercase;
+	text-transform: lowercase;
 	font-family: 'Abel', sans-serif;
 	font-size: 14px;
 	color: #FFFFFF;
@@ -629,7 +629,6 @@ ul.style3 .first {
 			background: #323338;
 			border-radius: 4px;
 			text-decoration: none;
-			text-transform: uppercase;
 			font-size: 1.1em;
 			color: #FFF;
 			-moz-transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out;
@@ -656,7 +655,6 @@ ul.style3 .first {
 	border-radius: 5px;
 	line-height: normal;
 	text-align: center;
-	text-transform: uppercase;
 	text-decoration: none;
 	text-shadow: 1px 1px 1px #8A8B71;
 	font-family: 'Abel', sans-serif;

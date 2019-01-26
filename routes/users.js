@@ -6,6 +6,10 @@ let User = require('../models/user');
 const passport = require('passport');
 
 router.get('/login', function (req, res) {
+    if(req.user)
+    {
+        res.redirect('/mainpage');
+    }
     res.render('login', { title: 'Login' });
 });
 

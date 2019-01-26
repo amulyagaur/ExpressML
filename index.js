@@ -101,6 +101,20 @@ app.get('/mainpage', function (req, res) {
     }
 });
 
+app.get('/visualize', function (req, res) {
+    if(req.user)
+    {
+    res.render('visual', {
+        features: features
+    });
+}
+else
+{
+    req.flash('error', "Please Login");
+        res.redirect('/users/login');
+}
+});
+
 app.post('/file', function (req, res) {
     var form = new formidable.IncomingForm();
     features = [];

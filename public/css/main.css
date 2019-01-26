@@ -187,7 +187,6 @@ h5, .h5 {
 h6, .h6 {
   font-size: 1.6rem;
   line-height: 1.25;
-  text-transform: uppercase;
   letter-spacing: .16rem;
 }
 
@@ -966,7 +965,6 @@ input[type="button"] {
   font-family: "Nunito Sans", sans-serif;
   font-weight: 700;
   font-size: 1.4rem;
-  text-transform: uppercase;
   letter-spacing: .4rem;
   height: 6rem;
   line-height: 5.6rem;
@@ -1332,7 +1330,6 @@ input::-moz-focus-inner {
   font-family: "Nunito Sans", sans-serif;
   font-weight: 700;
   color: #000000;
-  text-transform: uppercase;
   letter-spacing: .2rem;
   font-size: 1.4rem;
   line-height: 2.4rem;
@@ -1749,7 +1746,6 @@ input::-moz-focus-inner {
   list-style: none;
   font-weight: 400;
   font-size: 12px;
-  text-transform: uppercase;
   letter-spacing: 2px;
   margin: 0;
 }
@@ -1809,7 +1805,6 @@ input::-moz-focus-inner {
   line-height: 42px;
   font-family: "Nunito Sans", sans-serif;
   font-size: 1.4rem;
-  text-transform: uppercase;
   letter-spacing: .2rem;
   color: rgba(255, 255, 255, 0.5);
   -webkit-transition: all 0.3s ease-in-out;
@@ -2167,7 +2162,6 @@ input::-moz-focus-inner {
   margin: 0;
   font-size: 10px;
   line-height: 2.4rem;
-  text-transform: uppercase;
   letter-spacing: 4px;
   position: absolute;
   right: calc(40px + (5.6rem/2));
@@ -2217,7 +2211,6 @@ input::-moz-focus-inner {
   font-weight: 600;
   font-size: 11px;
   line-height: 5.6rem;
-  text-transform: uppercase;
   letter-spacing: .3rem;
   color: #5b4f96;
   border-bottom: 1px solid transparent;
@@ -3982,7 +3975,6 @@ html.no-csstransitions .home-content__main {
   background-size: 10px 15px;
   color: rgba(255, 255, 255, 0.5);
   text-align: center;
-  text-transform: uppercase;
   border-radius: 50%;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
