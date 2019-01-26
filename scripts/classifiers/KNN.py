@@ -12,6 +12,7 @@ trainfeatures = lines[0][1:-2]
 label =lines[1][:-1]
 filename = lines[2][:-1]
 
+
 df = pd.read_csv(filename) 	
 
 train,test = train_test_split(df,test_size=0.9)
@@ -30,7 +31,7 @@ features_train = train[feat]
 labels_test = test[label]
 
 #feature selection
-select = SelectKBest(chi2, k=3).fit(features_train, labels_train)
+select = SelectKBest(chi2, k="all").fit(features_train, labels_train)
 ranking = select
 cols = select.get_support(indices=True)
 rank = select.scores_
@@ -39,14 +40,17 @@ new_features = features_train.columns[mask]
 features_train = features_train[new_features]
 features_test = features_test[new_features]
 
-# Logistic Regression: 
+# print "KNN :"
 t0 =time()
-from sklearn.model_selection import GridSearchCV
-from sklearn.linear_model import LogisticRegression
-grid={"C":np.logspace(-3,3,7), "penalty":["l1","l2"]}# l1 lasso l2 ridge
-logreg=LogisticRegression()
-gd_sr = GridSearchCV(estimator=logreg,  
-                     param_grid=grid,
+grid_param = {'n_neighbors':[1,2,3],
+          'leaf_size':[2,5],
+          'weights':['uniform', 'distance'],
+          'algorithm':['auto', 'ball_tree','kd_tree','brute'],
+          'n_jobs':[-1]}
+from sklearn.neighbors import KNeighborsClassifier
+clf1 = KNeighborsClassifier(n_neighbors=3,algorithm='ball_tree')
+gd_sr = GridSearchCV(estimator=clf1,  
+                     param_grid=grid_param,
                      scoring='accuracy',
                      cv=2,
                      n_jobs=-1)

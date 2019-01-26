@@ -28,9 +28,8 @@ labels_train = train[label]
 features_train = train[feat]
 
 labels_test = test[label]
-
 #feature selection
-select = SelectKBest(chi2, k=3).fit(features_train, labels_train)
+select = SelectKBest(chi2, k="all").fit(features_train, labels_train)
 ranking = select
 cols = select.get_support(indices=True)
 rank = select.scores_
@@ -39,23 +38,12 @@ new_features = features_train.columns[mask]
 features_train = features_train[new_features]
 features_test = features_test[new_features]
 
-# SVM :
-t0 =time()
-grid_param = {'C': [6,10,12], 
-          'kernel': ['linear','rbf']}
-from sklearn.svm import SVC
-clf3 = SVC()
-clf3.fit(features_train,labels_train)
-gd_sr = GridSearchCV(estimator=clf3,  
-                     param_grid=grid_param,
-                     scoring='accuracy',
-                     cv=2,
-                     n_jobs=-1)
-gd_sr.fit(features_train,labels_train)
-modelPred = 100*gd_sr.best_score_
-modeltune = gd_sr.best_params_
-trainTime = round(time()-t0,3)
-
+# Gaussian naive_bayes :
+t0 = time()
+from sklearn.naive_bayes import GaussianNB
+clf = GaussianNB()
+clf.fit(features_train, labels_train)
+modelPred = 100*clf.score(features_test,labels_test)
+trainTime = (time()-t0)
 print(modelPred)
-print(modeltune)
-print(trainTime)
+print(trainTime) 

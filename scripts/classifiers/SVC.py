@@ -30,7 +30,7 @@ features_train = train[feat]
 labels_test = test[label]
 
 #feature selection
-select = SelectKBest(chi2, k=3).fit(features_train, labels_train)
+select = SelectKBest(chi2, k="all").fit(features_train, labels_train)
 ranking = select
 cols = select.get_support(indices=True)
 rank = select.scores_
@@ -39,22 +39,19 @@ new_features = features_train.columns[mask]
 features_train = features_train[new_features]
 features_test = features_test[new_features]
 
-# print "KNN :"
+# SVM :
 t0 =time()
-grid_param = {'n_neighbors':[1,2,3],
-          'leaf_size':[2,5],
-          'weights':['uniform', 'distance'],
-          'algorithm':['auto', 'ball_tree','kd_tree','brute'],
-          'n_jobs':[-1]}
-from sklearn.neighbors import KNeighborsClassifier
-clf1 = KNeighborsClassifier(n_neighbors=3,algorithm='ball_tree')
-gd_sr = GridSearchCV(estimator=clf1,  
+grid_param = {'C': [6,10,12], 
+          'kernel': ['linear','rbf']}
+from sklearn.svm import SVC
+clf3 = SVC()
+clf3.fit(features_train,labels_train)
+gd_sr = GridSearchCV(estimator=clf3,  
                      param_grid=grid_param,
                      scoring='accuracy',
                      cv=2,
                      n_jobs=-1)
 gd_sr.fit(features_train,labels_train)
-
 modelPred = 100*gd_sr.best_score_
 modeltune = gd_sr.best_params_
 trainTime = round(time()-t0,3)

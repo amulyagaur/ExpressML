@@ -28,8 +28,9 @@ labels_train = train[label]
 features_train = train[feat]
 
 labels_test = test[label]
+
 #feature selection
-select = SelectKBest(chi2, k=3).fit(features_train, labels_train)
+select = SelectKBest(chi2, k="all").fit(features_train, labels_train)
 ranking = select
 cols = select.get_support(indices=True)
 rank = select.scores_
@@ -38,12 +39,26 @@ new_features = features_train.columns[mask]
 features_train = features_train[new_features]
 features_test = features_test[new_features]
 
-# Gaussian naive_bayes :
-t0 = time()
-from sklearn.naive_bayes import GaussianNB
-clf = GaussianNB()
-clf.fit(features_train, labels_train)
-modelPred = 100*clf.score(features_test,labels_test)
-trainTime = (time()-t0)
+# Random Forest: 
+t0 =time()
+grid_param = {  
+    'n_estimators': [100, 300, 500, 800, 1000],
+    'criterion': ['gini', 'entropy'],
+    'bootstrap': [True, False]
+}
+from sklearn.ensemble import RandomForestClassifier
+clf4 = RandomForestClassifier(max_depth=2, random_state=0)
+gd_sr = GridSearchCV(estimator=clf4,  
+                     param_grid=grid_param,
+                     scoring='accuracy',
+                     cv=2,
+                     n_jobs=-1)
+gd_sr.fit(features_train,labels_train)
+
+modelPred = 100*gd_sr.best_score_
+modeltune = gd_sr.best_params_
+trainTime = round(time()-t0,3)
+
 print(modelPred)
-print(trainTime) 
+print(modeltune)
+print(trainTime)

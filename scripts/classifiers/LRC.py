@@ -30,7 +30,7 @@ features_train = train[feat]
 labels_test = test[label]
 
 #feature selection
-select = SelectKBest(chi2, k=3).fit(features_train, labels_train)
+select = SelectKBest(chi2, k="all").fit(features_train, labels_train)
 ranking = select
 cols = select.get_support(indices=True)
 rank = select.scores_
@@ -39,17 +39,14 @@ new_features = features_train.columns[mask]
 features_train = features_train[new_features]
 features_test = features_test[new_features]
 
-# Random Forest: 
+# Logistic Regression: 
 t0 =time()
-grid_param = {  
-    'n_estimators': [100, 300, 500, 800, 1000],
-    'criterion': ['gini', 'entropy'],
-    'bootstrap': [True, False]
-}
-from sklearn.ensemble import RandomForestClassifier
-clf4 = RandomForestClassifier(max_depth=2, random_state=0)
-gd_sr = GridSearchCV(estimator=clf4,  
-                     param_grid=grid_param,
+from sklearn.model_selection import GridSearchCV
+from sklearn.linear_model import LogisticRegression
+grid={"C":np.logspace(-3,3,7), "penalty":["l1","l2"]}# l1 lasso l2 ridge
+logreg=LogisticRegression()
+gd_sr = GridSearchCV(estimator=logreg,  
+                     param_grid=grid,
                      scoring='accuracy',
                      cv=2,
                      n_jobs=-1)

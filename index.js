@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 3010
+const port = 3050
 var csv = require("fast-csv");
 var formidable = require('formidable');
 app.use(express.static('public'));
@@ -121,7 +121,8 @@ app.get('/analyze', function (req, res) {
             features: features,
             traintime: "",
             accuracy: "",
-            type: ""
+            type: "",
+            flag:0
         });
     }
     else {
@@ -154,6 +155,7 @@ app.post('/analyze', function (req, res) {
         req.flash('error', 'Select a model first');
         res.redirect('/analyze');
     }
+    
     else
         if (MyData.length == 0) {
             req.flash('error', 'Select atleast one feature');
@@ -161,6 +163,7 @@ app.post('/analyze', function (req, res) {
         }
         else {
             str = JSON.stringify(MyData);
+            console.log(filename)
             str = str + "\n" + label + "\n" + filename;
             console.log(str);
             if(type=="checked")
@@ -183,7 +186,7 @@ app.post('/analyze', function (req, res) {
                     throw err;
                 console.log('finished');
                 console.log(msg);
-                
+
                 for (var i = 0; i < msg.length; i++) {
                     console.log(i);
                     console.log("\n");
@@ -191,24 +194,17 @@ app.post('/analyze', function (req, res) {
                     console.log("\n");
                 }
                 var acc = msg[1];
-                acc = acc.substr(1, acc.length - 2);
-
-                acc = acc.replace(/\(/g, '');
-
-                acc = acc.replace(/\)/g, '');
-
-                acc = acc.split(',');
+                
 
                 var t_time = msg[3];
-                t_time = t_time.substr(1, t_time.length - 2);
-                t_time = t_time.split(',');
-
+                
 
                 res.render('analyze', {
                     features: features,
                     traintime: t_time,
                     accuracy: acc,
-                    type: type
+                    type: type,
+                    flag:1
                 });
 
             });
@@ -225,7 +221,7 @@ app.post('/file', function (req, res) {
     form.on('fileBegin', function (name, file) {
         file.name = req.user.username + '.csv';
         file.path = __dirname + '/public/uploads/' + file.name;
-        filename=file.name;
+        filename=file.path;
     });
 
     form.on('file', function (name, file) {

@@ -255,12 +255,7 @@
 								</div>
 
 							</header>
-							<% if(flag==1){  %>
-									<div class="container">
-											<p><%= traintime %></p>
-											<p><%= accuracy %></p>
-									</div>
-							<% } %>
+							<% if(flag==0){  %>
 							<iframe class="cls" id="KNN" src="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html" height=980px width=850px>
 								
 							  </iframe>
@@ -292,9 +287,12 @@
 							  <iframe class="reg" id="ETR" src="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html" height=980px width=850px>
 								
 							  </iframe> 
-
-	
-
+<% } else {%>
+	<div class="container">
+	<p><%= traintime %></p>
+	<p><%= accuracy %></p>
+	</div>
+<% } %>
 						</section>
 					</div>
 
@@ -474,7 +472,72 @@
 								</ul>
 							</div>
 							</form>
-							
+							<div id="comparison">
+								<!-- Plotly chart will be drawn inside this DIV -->
+							</div>
+
+
+							<% if(traintime != ""){ %>
+							<script>
+
+								var tt = "<%= traintime %>";
+								var ac = "<%= accuracy %>";
+
+								var arr = tt.split(',');
+								var arr1 = ac.split(',');
+
+								for (var i = 0; i < arr.length; i++)
+									arr[i] = Number(arr[i]);
+
+								console.log(arr);
+								var idx = [];
+								for (var i = 1; i <= arr.length; i++)
+									idx.push(i);
+
+								console.log(idx);
+
+								var acc = [];
+								var idx1 = [];
+								for (var i = 0; i < arr1.length; i++) {
+									if (i % 2 == 0) {
+										acc.push(Number(arr1[i]));
+									}
+									else {
+										idx1.push(Number(arr1[i]));
+									}
+								}
+								var tt = {
+									x: idx,
+									y: arr,
+									mode: 'lines+markers',
+									name: 'Training time'
+								};
+
+								var trace2 = {
+									x: idx1,
+									y: acc,
+									mode: 'lines+markers',
+									name: 'Accuracy'
+								};
+								var data = [tt, trace2];
+								var models = ['Naive Bayes', 'KNN', 'Decision Trees', 'SVM', 'Random Forest'];
+								var layout = {
+									title: 'Comparison of ML Models',
+									xaxis: {
+										title: 'Naive Bayes             KNN      ,        Decision Trees                    SVM            Random Forest'
+									},
+									yaxis: {
+										title: 'Time/Accuracy'
+
+									},
+									height: 600,
+									width: 950
+								};
+
+								Plotly.newPlot('comparison', data, layout, { responsive: true });
+
+							</script>
+							<% } %>
 						</section>
 					</div>
 

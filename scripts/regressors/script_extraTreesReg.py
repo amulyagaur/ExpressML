@@ -6,6 +6,7 @@ from sklearn.feature_selection import chi2
 from sklearn.feature_selection import f_regression
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
+from sklearn.feature_selection import mutual_info_regression
 from time import time 
 
 lines = sys.stdin.readlines()
@@ -31,23 +32,29 @@ features_train = train[feat]
 labels_test = test[label]
 
 # feature selection
-select = SelectKBest(f_regression, k="all").fit(features_train, labels_train)
-ranking = select
-cols = select.get_support(indices=True)
-rank = select.scores_
-mask = select.get_support()
-new_features = features_train.columns[mask]
-features_train = features_train[new_features]
-features_test = features_test[new_features]
+# select = SelectKBest(f_regression, k=3).fit(features_train, labels_train)
+# ranking = select
+# cols = select.get_support(indices=True)
+# rank = select.scores_
+# mask = select.get_support()
+# new_features = features_train.columns[mask]
+# features_train = features_train[new_features]
+# features_test = features_test[new_features]
 
-# ridge regression
+# extraTrees regression
 t0 = time()
-from sklearn.linear_model import Ridge
+from sklearn.ensemble import ExtraTreesRegressor
 from sklearn.model_selection import GridSearchCV
 
-grid_param={'alpha': [10,4,1.0,0.5,0.3,0.08,0.02]}
-rdg_reg = Ridge()
-gd_sr = GridSearchCV(estimator=rdg_reg,
+grid_param={
+        'n_estimators': [50,110],
+        'max_features': [2,5],
+        'min_samples_split': [15,25,35]
+    }
+
+model = ExtraTreesRegressor(n_estimators=100, n_jobs=4, min_samples_split=25,
+                            min_samples_leaf=35, max_features=9)
+gd_sr = GridSearchCV(estimator=model,
                      param_grid=grid_param,
                     #  scoring='neg_mean_squared_error',
                      cv=2,
