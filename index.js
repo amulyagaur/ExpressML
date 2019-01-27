@@ -20,7 +20,6 @@ app.use(session({
 var features = [];
 var dataframe = [];
 var dataset = [];
-var msg = [];
 var filename;
 
 var bodyParser = require('body-parser')
@@ -122,7 +121,8 @@ app.get('/analyze', function (req, res) {
             traintime: "",
             accuracy: "",
             type: "",
-            flag:0
+            flag: 0,
+            flag1: 0
         });
     }
     else {
@@ -131,19 +131,47 @@ app.get('/analyze', function (req, res) {
     }
 });
 app.post('/predict', function (req, res) {
-    var value=req.body.predict;
+    var msg = [];
+    var MyData = [];
+    var label = req.body.predictLabel;
+    for (var i = 0; i < features.length; i++)
+        if (features[i] != label)
+            MyData.push(features[i]);
+    var value = req.body.predict;
     console.log(value);
-    res.render('analyze', {
-        features: features,
-        traintime: "",
-        accuracy: "",
-        type: "",
-        flag:0
+
+    var scriptfile = 'scripts/script_SelectKBest.py';
+    var str = JSON.stringify(MyData);
+    console.log(filename)
+    str = str + "\n" + label + "\n" + filename + "\n" + value;
+    console.log(str)
+    var pyshell = new PythonShell(scriptfile);
+    pyshell.send(str);
+
+    pyshell.on('message', function (message) {
+        // received a message sent from the Python script (a simple "print" statement)
+        //console.log(message);
+        msg.push(message);
+    });
+
+    // end the input stream and allow the process to exit
+    pyshell.end(function (err, code, signal) {
+        if (err)
+            throw err;
+        console.log('finished');
+        console.log(msg);
+
+        // res.render('analyze', {
+        //     features: features,
+        //     traintime: "",
+        //     accuracy: "",
+        //     type: "",
+        //     flag: 0
+        // });
     });
 });
-
 app.post('/analyze', function (req, res) {
-
+    var msg = [];
     var MyData = req.body.feature;
     var label = req.body.label;
     var type = req.body.type;
@@ -166,7 +194,7 @@ app.post('/analyze', function (req, res) {
         req.flash('error', 'Select a model first');
         res.redirect('/analyze');
     }
-    
+
     else
         if (MyData.length == 0) {
             req.flash('error', 'Select atleast one feature');
@@ -177,15 +205,15 @@ app.post('/analyze', function (req, res) {
             console.log(filename)
             str = str + "\n" + label + "\n" + filename;
             console.log(str);
-            if(type=="checked")
-            scriptfile = regressor;
+            if (type == "checked")
+                scriptfile = regressor;
             else
-            scriptfile = classifier;
-            if(type=="unchecked")
-            scriptfile = 'scripts/classifiers/'+scriptfile+'.py';
+                scriptfile = classifier;
+            if (type == "unchecked")
+                scriptfile = 'scripts/classifiers/' + scriptfile + '.py';
             else
-            scriptfile = 'scripts/regressors/'+scriptfile+'.py';
-            
+                scriptfile = 'scripts/regressors/' + scriptfile + '.py';
+
             var pyshell = new PythonShell(scriptfile);
             pyshell.send(str);
 
@@ -209,8 +237,8 @@ app.post('/analyze', function (req, res) {
                     console.log("\n");
                 }
                 var acc = msg[1];
-                if(classifier=="SBC")
-                {
+                var f1 = 0;
+                if (classifier == "SBC") {
                     acc = acc.substr(1, acc.length - 2);
 
                     acc = acc.replace(/\(/g, '');
@@ -218,11 +246,11 @@ app.post('/analyze', function (req, res) {
                     acc = acc.replace(/\)/g, '');
 
                     acc = acc.split(',');
+                    f1 = 1;
                 }
 
                 var t_time = msg[3];
-                if(classifier=="SBC")
-                {
+                if (classifier == "SBC") {
                     t_time = t_time.substr(1, t_time.length - 2);
                     t_time = t_time.split(',');
                 }
@@ -231,7 +259,9 @@ app.post('/analyze', function (req, res) {
                     traintime: t_time,
                     accuracy: acc,
                     type: type,
-                    flag:1
+                    flag: 1,
+                    flag1: f1,
+                    hp:msg[2]
                 });
 
             });
@@ -248,7 +278,7 @@ app.post('/file', function (req, res) {
     form.on('fileBegin', function (name, file) {
         file.name = req.user.username + '.csv';
         file.path = __dirname + '/public/uploads/' + file.name;
-        filename=file.path;
+        filename = file.path;
     });
 
     form.on('file', function (name, file) {

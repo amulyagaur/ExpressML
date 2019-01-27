@@ -65,6 +65,7 @@
 
 		$(document).ready(function () {
 			$("#analyzeButton").attr('disabled', true);
+			$("#analyzeButton1").attr('disabled', true);
 			$(".regress").hide();
 			$(".cls").hide();
 			$(".reg").hide();
@@ -79,6 +80,7 @@
 
 		function activateButton() {
 			$("#analyzeButton").attr('disabled', false);
+			$("#analyzeButton1").attr('disabled', false);
 		}
 
 		function hideClassify(){
@@ -179,6 +181,10 @@
 
 						<li><a href="/visualize">Visualize</a></li>
 						<li class="active"><a href="/analyze">Analyze</a></li>
+						<% if(user){ %>
+
+                        <li><a href="/users/logout">Logout</a></li>
+                        <% } %>
 					</ul>
 				</nav>
 			</div>
@@ -214,7 +220,7 @@
 										</div>
 									</ul>
 									<hr>
-									<h2>Labels/Output</h2>
+									<h2>Target</h2>
 									<ul class="style1">
 										<div class="container">
 											<% for(var i=0;i< features.length;i++){%>
@@ -232,8 +238,7 @@
 											<br>
 											<% } %>
 											<!-- <button type="submit" class="btn btn-outline-secondary btn-lg act" id="analyzeButton">Submit</button> -->
-											<button type="submit" class="btn btn-success btn-lg btn3d" id="analyzeButton"><span class="glyphicon glyphicon-ok"></span>
-												Submit</button>
+											
 										</div>
 									</ul>
 
@@ -255,44 +260,152 @@
 								</div>
 
 							</header>
-							<% if(flag==1){  %>
-									<div class="container">
-											<p><%= traintime %></p>
-											<p><%= accuracy %></p>
-									</div>
+							<% if(flag==1 && flag1==0){  %>
+									
+									<div class="container1" align="centre">
+										<div class="row row-flex">
+										  <div class="col-md-4 col-sm-6 col-xs-12">
+											<div class="content colour-1">
+											  <h3>Running time</h3>
+											  <p><%= traintime %> s</p>								
+											</div>
+										  </div>
+										  <br>
+										  <div class="col-md-4 col-sm-6 col-xs-12">
+											<div class="content colour-2">
+											<% if(type=="checked"){ %>
+											  <h3>Score</h3>
+											  <% } else{ %>
+													<h3>Acurracy</h3>
+											  <% } %>
+											  <p><%= accuracy %> %</p>
+											</div>
+										  </div>
+										  <br>
+										  <div class="col-md-4 col-sm-6 col-xs-12">
+												<div class="content colour-3">
+												<h3>HyperParameter Tuning</h3>
+												<p> <%= hp %> </p>
+												</div>
+										  </div>
+										  <br>
+										  
+										</div>
+									</div>	
 							<% } %>
-							<iframe class="cls" id="KNN" src="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html" height=980px width=850px>
+							<iframe class="cls" id="KNN" src="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html" height=980px width=825px>
 								
 							  </iframe>
-							  <iframe class="cls" id="LR" src="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html" height=980px width=850px>
+							  <iframe class="cls" id="LR" src="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html" height=980px width=825px>
 								
 							  </iframe>
-							  <iframe class="cls" id="GNB" src="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html" height=980px width=850px>
+							  <iframe class="cls" id="GNB" src="https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html" height=980px width=825px>
 								
 							  </iframe>
-							  <iframe class="cls" id="RFC" src="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html" height=980px width=850px>
+							  <iframe class="cls" id="RFC" src="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html" height=980px width=825px>
 								
 							  </iframe>
-							  <iframe class="cls" id="SVC" src="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html" height=980px width=850px>
+							  <iframe class="cls" id="SVC" src="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html" height=980px width=825px>
 								
 							  </iframe>     
 
-							  <iframe class="reg" id="LNR" src="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html" height=980px width=850px>
+							  <iframe class="reg" id="LNR" src="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html" height=980px width=825px>
 								
 							  </iframe>
 
-							  <iframe class="reg" id="LSR" src="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html" height=980px width=850px>
+							  <iframe class="reg" id="LSR" src="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html" height=980px width=825px>
 								
 							  </iframe> 
 
-							  <iframe class="reg" id="RR" src="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html" height=980px width=850px>
+							  <iframe class="reg" id="RR" src="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html" height=980px width=825px>
 								
 							  </iframe>
 
-							  <iframe class="reg" id="ETR" src="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html" height=980px width=850px>
+							  <iframe class="reg" id="ETR" src="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html" height=980px width=825px>
 								
 							  </iframe> 
+							  <% if(flag1==1){ %>
+							<div id="comparison">
+								<!-- Plotly chart will be drawn inside this DIV -->
+							</div><br><br>
+							<div id="comparison1">
+								<!-- Plotly chart will be drawn inside this DIV -->
+							</div>
+								<% } %>
 
+							<% if(traintime != ""){ %>
+							<script>
+
+								var tt = "<%= traintime %>";
+								var ac = "<%= accuracy %>";
+
+								var arr = tt.split(',');
+								var arr1 = ac.split(',');
+
+								for (var i = 0; i < arr.length; i++)
+									arr[i] = Number(arr[i]);
+
+								console.log(arr);
+								var idx = [];
+								for (var i = 1; i <= arr.length; i++)
+									idx.push(i);
+
+								console.log(idx);
+
+								var acc = [];
+								var idx1 = [];
+								for (var i = 0; i < arr1.length; i++) {
+									if (i % 2 == 0) {
+										acc.push(Number(arr1[i]));
+									}
+									else {
+										idx1.push(Number(arr1[i]));
+									}
+								}
+								var tt = {
+									x: idx,
+									y: arr,
+									mode: 'lines+markers',
+									name: 'Training time'
+								};
+
+								var trace2 = {
+									x: idx1,
+									y: acc,
+									mode: 'lines+markers',
+									name: 'Accuracy'
+								};
+								var data = [tt];
+								var data1 = [trace2];
+								var models = ['Naive Bayes', 'KNN', 'Decision Trees', 'SVM', 'Random Forest'];
+								var layout = {
+									title: 'Comparison of ML Models',
+									xaxis: {
+										title: 'Naive Bayes             KNN      ,        Decision Trees                    SVM            Random Forest'
+									},
+									yaxis: {
+										title: 'Time'
+
+									},
+									height: 600,
+									width: 800
+								};
+								var layout1 = {
+									title: 'Comparison of ML Models',
+									xaxis: {
+										title: 'Naive Bayes             KNN      ,        Decision Trees                    SVM            Random Forest'
+									},
+									yaxis: {
+										title: 'Accuracy'
+
+									},
+									height: 600,
+									width: 800
+								};
+								Plotly.newPlot('comparison', data, layout, { responsive: true });
+								Plotly.newPlot('comparison1', data1, layout1, { responsive: true });
+							</script>
+							<% } %>
 	
 
 						</section>
@@ -470,9 +583,12 @@
 										</li>
 										<br>
 									</div>
-
 								</ul>
 							</div>
+							<div style="text-align:center">
+								<button type="submit" class="btn btn-success btn-lg btn3d" id="analyzeButton" ><span class="glyphicon glyphicon-ok"></span>
+													Submit</button>
+							</div>						
 							</form>
 							
 							<form action="/predict" method="POST">
@@ -480,12 +596,15 @@
 									<header>
 										<br>
 										<br>
-										<h1>Predict Features</h1>			
+										<h1>Select Features</h1>			
 									</header>
-									<input type="text" name="predict" class="form-control" id="exampleInputPassword1" placeholder="Enter no of featues to compare">
+									<input type="text" name="predictLabel" class="form-control" id="exampleInputPassword1" placeholder="Enter label name" required><br>
+									<input type="text" name="predict" class="form-control" id="exampleInputPassword1" placeholder="Enter no of featues to compare" required>
 								</div>
-								<button type="submit" class="btn btn-success btn-lg btn3d" id="analyzeButton"><span class="glyphicon glyphicon-ok"></span>
-									Predict</button>
+								<div style="text-align:center">
+									<button type="submit" class="btn btn-success btn-lg btn3d" id="analyzeButton2" ><span class="glyphicon glyphicon-ok"></span>
+										Predict</button>
+								</div>		
 							</form>
 							
 						</section>

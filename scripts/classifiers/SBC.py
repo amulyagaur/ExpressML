@@ -11,8 +11,6 @@ lines = sys.stdin.readlines()
 trainfeatures = lines[0][1:-2]
 label =lines[1][:-1]
 filename = lines[2][:-1]
-featno = lines[3][:-1]
-feat_no = int(featno)
 
 df = pd.read_csv(filename) 	
 
@@ -34,7 +32,7 @@ labels_test = test[label]
 modelPred = []
 trainTime = []
 modeltune = []
-id=1
+id=0
 
 
 
@@ -119,6 +117,7 @@ t0 = time()
 from sklearn.naive_bayes import GaussianNB
 clf = GaussianNB()
 clf.fit(features_train, labels_train)
+id=id+1
 modelPred.append((100*clf.score(features_test,labels_test),id))
 trainTime.append(time()-t0)
 

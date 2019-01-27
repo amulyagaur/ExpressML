@@ -135,7 +135,7 @@
 
 				<!-- Logo -->
 				<div id="logo">
-					<h1><a href="/">Express-ML</a></h1>
+					<h1><a href="/">ExpressML</a></h1>
 					<span>Easy to use tool to visualize your data</span>
 				</div>
 
@@ -146,6 +146,10 @@
 
 						<li class="active"><a href="/visualize">Visualize</a></li>
 						<li><a href="/analyze">Analyze</a></li>
+						<% if(user){ %>
+
+                        <li><a href="/users/logout">Logout</a></li>
+                        <% } %>
 					</ul>
 				</nav>
 			</div>

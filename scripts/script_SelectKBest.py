@@ -30,7 +30,7 @@ labels_train = train[label]
 features_train = train[feat]
 
 labels_test = test[label]
-
+# print(feat_no)
 #feature selection
 select = SelectKBest(chi2, k=feat_no).fit(features_train, labels_train)
 ranking = select
@@ -45,7 +45,7 @@ new_features = features_train.columns[mask]
 features_train = features_train[new_features]
 features_test = features_test[new_features]
 
-print ( new_features)
+# print ( new_features)
 
 # modelPred = []
 # trainTime = []
