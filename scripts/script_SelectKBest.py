@@ -2,6 +2,7 @@ import sys, json
 import pandas as pd
 import numpy as np
 from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import SelectPercentile
 from sklearn.feature_selection import chi2
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
@@ -32,6 +33,7 @@ features_train = train[feat]
 labels_test = test[label]
 # print(feat_no)
 #feature selection
+
 select = SelectKBest(chi2, k=feat_no).fit(features_train, labels_train)
 ranking = select
 cols = select.get_support(indices=True)

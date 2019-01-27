@@ -44,12 +44,11 @@ from sklearn.model_selection import GridSearchCV
 
 grid_param={
         'n_estimators': [50,110],
-        'max_features': [2,5],
         'min_samples_split': [15,25,35]
     }
 
 model = ExtraTreesRegressor(n_estimators=100, n_jobs=4, min_samples_split=25,
-                            min_samples_leaf=35, max_features=9)
+                            min_samples_leaf=35)
 gd_sr = GridSearchCV(estimator=model,
                      param_grid=grid_param,
                     #  scoring='neg_mean_squared_error',

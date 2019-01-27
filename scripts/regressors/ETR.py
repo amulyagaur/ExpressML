@@ -22,7 +22,7 @@ features='\",'+trainfeatures+',\"'
 feat = features.split('","')
 feat = feat[1:-1]
 desiredno = len(feat)
-
+print(desiredno)
 features_test = test[feat]
 
 labels_train = train[label]
@@ -48,12 +48,11 @@ from sklearn.model_selection import GridSearchCV
 
 grid_param={
         'n_estimators': [50,110],
-        'max_features': [2,5],
         'min_samples_split': [15,25,35]
     }
 
 model = ExtraTreesRegressor(n_estimators=100, n_jobs=4, min_samples_split=25,
-                            min_samples_leaf=35, max_features=9)
+                            min_samples_leaf=35)
 gd_sr = GridSearchCV(estimator=model,
                      param_grid=grid_param,
                     #  scoring='neg_mean_squared_error',
@@ -65,6 +64,7 @@ modelPred = gd_sr.best_score_
 modeltune = gd_sr.best_params_
 trainTime = round(time()-t0, 3)
 
+print(trainTime)
 print(modelPred)
 print(modeltune)
-print(trainTime)
+

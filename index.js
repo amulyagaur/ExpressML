@@ -118,12 +118,17 @@ app.get('/analyze', function (req, res) {
     if (req.user) {
         res.render('analyze', {
             features: features,
-            traintime: "",
-            accuracy: "",
-            type: "",
-            flag: 0,
-            flag1: 0
+                    traintime: '',
+                    accuracy: '',
+                    type: '',
+                    flag: 0,
+                    flag1: 0,
+                    hp: '',
+                    user: req.user,
+                    bestf:'',
+                    xyz:''
         });
+        
     }
     else {
         req.flash('error', "Please Login");
@@ -137,7 +142,16 @@ app.post('/predict', function (req, res) {
     for (var i = 0; i < features.length; i++)
         if (features[i] != label)
             MyData.push(features[i]);
+
+    if (MyData.length == features.length) {
+        req.flash('error', 'Enter a valid label');
+        res.redirect('/analyze');
+    }
     var value = req.body.predict;
+    if (value >= features.length) {
+        req.flash('error', 'Enter a valid value (< no. of features)');
+        res.redirect('/analyze');
+    }
     console.log(value);
 
     var scriptfile = 'scripts/script_SelectKBest.py';
@@ -160,24 +174,42 @@ app.post('/predict', function (req, res) {
             throw err;
         console.log('finished');
         console.log(msg);
-
-        // res.render('analyze', {
-        //     features: features,
-        //     traintime: "",
-        //     accuracy: "",
-        //     type: "",
-        //     flag: 0
-        // });
+        for( var i=0; i< msg.length ; i++)
+            console.log(msg[i]);
+        var x1 = msg[1];
+        x1 = x1.substr(1,x1.length-2);
+        var select=[];
+        for( var i=0;i<x1.length;i++)
+            {
+                select.push(MyData[x1[i]]);
+            }
+        res.render('analyze', {
+         features: features,
+                    traintime: '',
+                    accuracy: '',
+                    type: '',
+                    flag: 1,
+                    flag1: '',
+                    hp: '',
+                    user: req.user,
+                    bestf:select,
+                    xyz:'Selected Features'
+                });
     });
+     
+    
 });
+
 app.post('/analyze', function (req, res) {
     var msg = [];
     var MyData = req.body.feature;
     var label = req.body.label;
     var type = req.body.type;
     var classifier, regressor;
+
     console.log(type);
     if (type == 'on') {
+        
         msg.push("regression");
         type = "checked";
         regressor = req.body.regressor;
@@ -238,7 +270,7 @@ app.post('/analyze', function (req, res) {
                 }
                 var acc = msg[1];
                 var f1 = 0;
-                if (classifier == "SBC") {
+                if (classifier == "SBC" || regressor=="SBR") {
                     acc = acc.substr(1, acc.length - 2);
 
                     acc = acc.replace(/\(/g, '');
@@ -250,7 +282,7 @@ app.post('/analyze', function (req, res) {
                 }
 
                 var t_time = msg[3];
-                if (classifier == "SBC") {
+                if (classifier == "SBC" || regressor=="SBR") {
                     t_time = t_time.substr(1, t_time.length - 2);
                     t_time = t_time.split(',');
                 }
@@ -261,7 +293,10 @@ app.post('/analyze', function (req, res) {
                     type: type,
                     flag: 1,
                     flag1: f1,
-                    hp:msg[2]
+                    hp: msg[2],
+                    user: req.user,
+                    bestf:'',
+                    xyz:classifier || regressor
                 });
 
             });
