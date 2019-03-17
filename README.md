@@ -4,7 +4,7 @@
 [![NPM Version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
 [![Downloads Stats][npm-downloads]][npm-url]
-[![HitCount](http://hits.dwyl.io/amulyagaur/amulyagaur.github.io.svg)](http://hits.dwyl.io/amulyagaur/amulyagaur.github.io)
+[![HitCount](http://hits.dwyl.io/amulyagaur/ExpressML.svg)](http://hits.dwyl.io/amulyagaur/ExpressML)
 ## Screenshots
 ![Screenshots](/public/images/pic1.png)
 ![Screenshots](/public/images/pic2.png)
